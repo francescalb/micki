@@ -211,8 +211,8 @@ class Reaction(object):
             Gr = self.reactants.get_G(T)
             Gp = self.products.get_G(T)
 
-            dEr = np.sum([species.coverage + species.dE for species in self.reactants])
-            dEp = np.sum([species.coverage + species.dE for species in self.products])
+            dEr = np.sum([species.lateral + species.dE for species in self.reactants])
+            dEp = np.sum([species.lateral + species.dE for species in self.products])
 
             dGf = Gts - Gr + dEr
             dGr = Gts - Gp + dEp
@@ -334,15 +334,15 @@ class Reaction(object):
             kfor1 = _k * self.T * barr / _hplanck * self.scale['kfor']
             kfor2 = kfor1 * self.keq * self.scale['krev'] / self.scale['kfor']
             self.kfor = kfor1 * kfor2 / (kfor1 + kfor2)
-        elif self.method == 'CT':
-            # CT is TST with the transition state being a non-interacting
+        elif self.method == 'STICK':
+            # STICK is TST with the transition state being a non-interacting
             # 2D ideal gas.
             found_fluid = False
             for species in self.reactants:
                 if isinstance(species, _Fluid):
                     if found_fluid:
                         raise ValueError("At most one fluid "
-                                         "can react with CT!")
+                                         "can react with STICK!")
                     found_fluid = True
                     fluid = species
             Sfluid = fluid.get_S(self.T)
