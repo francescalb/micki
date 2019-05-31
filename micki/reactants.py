@@ -48,7 +48,7 @@ class _Thermo(object):
         self.spin = 0.
         self.ts = False
         self.label = None
-        self.coverage = 0.
+        self.lateral = 0.
         self.dE = 0.
         self.sites = []
         self.lattice = None
@@ -162,7 +162,7 @@ class _Thermo(object):
 
     def get_H(self, T=None):
         self.update(T)
-        return (self.H + self.coverage) * self.scale['H']
+        return (self.H + self.lateral) * self.scale['H']
 
     def get_S(self, T=None):
         self.update(T)
@@ -174,7 +174,7 @@ class _Thermo(object):
 
     def get_E(self, T=None):
         self.update(T)
-        return (self.E['tot'] + self.coverage) * self.scale['E']['tot']
+        return (self.E['tot'] + self.lateral) * self.scale['E']['tot']
 
     def get_q(self, T=None):
         self.update(T)
@@ -218,7 +218,7 @@ class _Thermo(object):
                           'recreate the energy reference when you re-use this '
                           'species.', RuntimeWarning, stacklevel=2)
 
-        if self.coverage != 0.:
+        if self.lateral != 0.:
             warnings.warn('Coverage dependence cannot be stored in a db! You '
                           'must recreate the coverage dependence when you '
                           're-use this species.', RuntimeWarning, stacklevel=2)
@@ -366,7 +366,7 @@ class Electron(_Thermo):
         self.atoms = Atoms()
         self.potential_energy = E
         self.label = label
-        self.coverage = self_repulsion * self.symbol
+        self.lateral = self_repulsion * self.symbol
 
     def get_reference_state(self):
         return 1.
@@ -375,7 +375,7 @@ class Electron(_Thermo):
         label = self.label
         if newlabel is not None:
             label = newlabel
-        return self.__class(self.potential_energy, self.coverage, label)
+        return self.__class(self.potential_energy, self.lateral, label)
 
     def _calc_q(self, T):
         self._calc_qelec(T)
