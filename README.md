@@ -7,4 +7,4 @@ written in Python. This software is not yet stable (but it's close!).
  * ase
  * numpy
  * sympy
- * sundials (C library)
+ * sundials (C library) - has been tested with versions 2.7.0 and 2.1.0. Does not work with versions 4.0 and later.
