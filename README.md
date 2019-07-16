@@ -1,9 +1,10 @@
 ### micki
 
 A modular, extensible, robust object-oriented microkinetic modeling package
-written in Python. This software is not yet stable (but it's close!).
+written in Python.
 
 ### DEPENDENCIES:
+ * lapack (MKL by default "-lmkl_rt"; can specify alternative LAPACK library via MICKI_LAPACK environmental variable)
  * ase
  * numpy
  * sympy
