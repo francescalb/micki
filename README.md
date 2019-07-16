@@ -8,8 +8,5 @@ written in Python.
  * ase
  * numpy
  * sympy
- * sundials (C library) - Please use version 2.7.0 for best performance. Compatability with 4.X requires modifications to fortran.py (see comments). Compile with the following flags: -DFCMIX_ENABLE=ON -DCMAKE_C_FLAGS="-fPIC" -DLAPACK_ENABLE=ON
- 
+ * sundials (C library) - Tested with version 4.0. Compile Sundials with the following flags to cmake: -DFCMIX_ENABLE=ON -DCMAKE_C_FLAGS="-fPIC" -DLAPACK_ENABLE=ON -DSUNDIALS_INDEX_SIZE=32
 
-### model.py
-Currently, the user must modify the compiler flags passed when compiling with f2py on lines 883-892 in model.py in order to use Micki. Current flags are what work for our system and are not guaranteed to work for abritrary systems.
