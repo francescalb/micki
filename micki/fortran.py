@@ -29,7 +29,6 @@ subroutine initialize(neqin, y0in, rtol, atol, ipar, rpar, id_vec)
    integer :: nthreads, iatol, ier
    integer :: i
    integer :: meth, itmeth
-   integer, external :: OMP_GET_NUM_THREADS, OMP_GET_THREAD_NUM
    integer :: myid
 
    dypdr = 0
@@ -40,13 +39,6 @@ subroutine initialize(neqin, y0in, rtol, atol, ipar, rpar, id_vec)
 
    iatol = 2
    constr_vec = 1.d0
-
-   !$OMP PARALLEL DEFAULT(private) SHARED(nthreads)
-   myid = OMP_GET_THREAD_NUM()
-   if (myid == 0) then
-      nthreads = OMP_GET_NUM_THREADS()
-   end if
-   !$OMP END PARALLEL
 
    y0 = y0in
    yp0 = 0
@@ -66,30 +58,23 @@ subroutine initialize(neqin, y0in, rtol, atol, ipar, rpar, id_vec)
 
    ! initialize Sundials
    call fnvinits(2, neq, ier)
-   !call fnvinitomp(2, neq, nthreads, ier)
    ! allocate memory
    call fidamalloc(t0, y0, yp0, iatol, rtol, atol, iout, rout, ipar, rpar, ier)
-! TODO: Fix all of these settings
    ! set maximum number of steps (default = 500)
    call fidasetiin('MAX_NSTEPS', 50000, ier)
    ! set algebraic variables
    call fidasetvin('ID_VEC', id_vec, ier)
    ! set constraints (all yi >= 0.)
    call fidasetvin('CONSTR_VEC', constr_vec, ier)
-!   ! enable stability limit detection
-!   call fidasetiin('STAB_LIM', 1, ier)
-   ! initialize the solver
+
+!Uncomment the following lines for Sundials 2.X
    call fidalapackdense(neq, ier)
-   ! enable the jacobian
    call fidalapackdensesetjac(1, ier)
-!   ! initialize the solver
-!   call fidaspgmr(0, 0, 10, 0.05d0, 1.0d0, ier)
-!!   call fidaspbcg(0, 0.05d0, 1.0d0, ier)
-!!   call fidasptfqmr(0, 0.05d0, 1.0d0, ier)
-!   ! enable the jacobian
-!   call fidaspilssetjac(1, ier)
-!   ! enable the preconditioner
-!   call fidaspilssetprec(1, ier)
+
+!Uncomment these lines for Sundials 4.X (and comment about the above)
+!  call FSUNDenseMatInit(2, neq, neq, ier)
+!  call FSUNDenseLinSolInit(2, ier)
+!  call FIDALSINIT(ier)
 
 end subroutine initialize
 

@@ -880,14 +880,18 @@ class Model(object):
                     nrates=len(self.rates), nvac=len(self.vacancy)))
 
         # Compile the module with f2py
+        lapack = "-lmkl_rt"
+        if "MICKI_LAPACK" in os.environ:
+            lapack = os.environ["MICKI_LAPACK"]
+        os.environ["CFLAGS"] = "-w"
         f2py.compile(program, modulename=modname,
                      extra_args='--quiet '
                                 '--f90flags="-Wno-unused-dummy-argument '
-                                '-Wno-unused-variable -w" ' 
+                                '-Wno-unused-variable -Wno-unused-func -w" ' 
                                 '-lsundials_fida '
                                 '-lsundials_fnvecserial '
                                 '-lsundials_ida '
-                                '-lsundials_nvecserial -lopenblas_openmp ' +
+                                '-lsundials_nvecserial ' + lapack + ' ' +
                                 os.path.join(dname, pyfname),
                      source_fn=os.path.join(dname, fname), verbose=0)
 
