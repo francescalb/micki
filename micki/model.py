@@ -891,6 +891,8 @@ class Model(object):
                                 '-lsundials_fida '
                                 '-lsundials_fnvecserial '
                                 '-lsundials_ida '
+                                '-lsundials_fsunlinsollapackdense '
+                                '-lsundials_sunlinsollapackdense '
                                 '-lsundials_nvecserial ' + lapack + ' ' +
                                 os.path.join(dname, pyfname),
                      source_fn=os.path.join(dname, fname), verbose=0)

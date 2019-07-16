@@ -68,13 +68,13 @@ subroutine initialize(neqin, y0in, rtol, atol, ipar, rpar, id_vec)
    call fidasetvin('CONSTR_VEC', constr_vec, ier)
 
 !Uncomment the following lines for Sundials 2.X
-   call fidalapackdense(neq, ier)
-   call fidalapackdensesetjac(1, ier)
+!   call fidalapackdense(neq, ier)
+!   call fidalapackdensesetjac(1, ier)
 
 !Uncomment these lines for Sundials 4.X (and comment about the above)
-!  call FSUNDenseMatInit(2, neq, neq, ier)
-!  call FSUNDenseLinSolInit(2, ier)
-!  call FIDALSINIT(ier)
+  call FSUNDenseMatInit(2, neq, neq, ier)
+  call FSUNLAPACKDENSEINIT(2, ier)
+  call FIDALSINIT(ier)
 
 end subroutine initialize
 
