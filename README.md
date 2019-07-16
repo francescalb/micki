@@ -1,13 +1,14 @@
 ### micki
 
 A modular, extensible, robust object-oriented microkinetic modeling package
-written in Python. This software is not yet stable (but it's close!).
+written in Python.
 
 ### DEPENDENCIES:
+ * lapack (MKL by default "-lmkl_rt"; can specify alternative LAPACK library via MICKI_LAPACK environmental variable)
  * ase
  * numpy
  * sympy
- * sundials (C library) - Please use version 2.7.0. Compile with the following flags: -DOPENMP_ENABLE=ON -DFCMIX_ENABLE=ON -DCMAKE_C_FLAGS="-fPIC" -DLAPACK_ENABLE=ON
+ * sundials (C library) - Please use version 2.7.0 for best performance. Compatability with 4.X requires modifications to fortran.py (see comments). Compile with the following flags: -DFCMIX_ENABLE=ON -DCMAKE_C_FLAGS="-fPIC" -DLAPACK_ENABLE=ON
  
 
 ### model.py
