@@ -42,7 +42,7 @@ class Reaction(object):
 
         # Determine the number of sites on the LHS and the RHS of the reaction,
         # then add "bare" sites as necessary to balance the site number.
-        vacancies = OrderedDict() 
+        vacancies = OrderedDict()
         self.species = []
         for species in self.reactants:
             if species not in self.species:
@@ -880,7 +880,7 @@ class Model(object):
                     nrates=len(self.rates), nvac=len(self.vacancy)))
 
         # Compile the module with f2py
-        lapack = "-lmkl_rt"
+        lapack = "-Lmkl_rt"
         if "MICKI_LAPACK" in os.environ:
             lapack = os.environ["MICKI_LAPACK"]
         os.environ["CFLAGS"] = "-w"
@@ -888,15 +888,15 @@ class Model(object):
                      extra_args='--quiet '
                                 '--f90flags="-Wno-unused-dummy-argument '
                                 '-Wno-unused-variable -Wno-unused-func -w" ' 
-                                '-lsundials_fida '
-                                '-lsundials_fnvecserial '
-                                '-lsundials_ida '
-                                '-lsundials_fsunlinsollapackdense '
-                                '-lsundials_sunlinsollapackdense '
-                                '-lsundials_nvecserial ' + lapack + ' ' +
+                                '-Lsundials_fida '
+                                '-Lsundials_fnvecserial '
+                                '-Lsundials_ida '
+                                '-Lsundials_fsunlinsollapackdense '
+                                '-Lsundials_sunlinsollapackdense '
+                                '-Lsundials_nvecserial ' + lapack + ' ' +
                                 os.path.join(dname, pyfname),
-                     source_fn=os.path.join(dname, fname), verbose=0)
-
+                     source_fn=os.path.join(dname, fname), verbose=True)
+        print('modname', modname)
         # Delete the temporary directory
         shutil.rmtree(dname)
 
